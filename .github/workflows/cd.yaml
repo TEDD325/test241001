@@ -1,0 +1,24 @@
+name: CD Workflow
+on: 
+    push:
+        branches: [ "main" ]
+jobs:
+  SSH:
+    runs-on: ubuntu-latest
+
+    steps:
+        - uses: actions/checkout@v3
+        - name: Run scripts in server
+          uses: appleboy/ssh-action@master
+          with:
+            key: ${{ secrets.SSH_KEY }} # private key
+            host: ${{ secrets.HOST }}
+            username: ${{ secrets.USER }} 
+            script: | 
+                cd ${{ vars.project_path }}/${{ github.event.repository.name }}
+                git pull origin main
+
+# vars.project_path: /home/ubuntu
+# github.event.repository.name: test241001
+# /home/ubuntu/test241001
+# git clone 
